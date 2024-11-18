@@ -25,8 +25,18 @@ class SudokuGenerator:
     def __init__(self, row_length, removed_cells):
         self.row_length = row_length
         self.removed_cells = removed_cells
-        self.board = []
-        self.box_length = row_length ** 0.5
+        self.board = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
+        self.box_length = int(math.sqrt(row_length))
 
 
     '''
@@ -77,8 +87,8 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def valid_in_col(self, col, num):
-        for row in self.board:
-            if row[col] == num:
+        for i in range(len(self.board)):
+            if self.board[i][col] == num:
                 return False
         return True
 
@@ -143,7 +153,17 @@ class SudokuGenerator:
 	Return: None
     '''
     def fill_box(self, row_start, col_start):
-        pass
+        unused_in_box = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        for i in range(row_start - 1 ,row_start + 2):
+            for j in range(col_start - 1, col_start + 2):
+                while True:
+                    random_number = random.randint(1,9)
+                    if random_number in unused_in_box:
+                        self.board[i][j] = random_number
+                        unused_in_box.remove(random_number)
+                        break
+                    else:
+                        continue
     
     '''
     Fills the three boxes along the main diagonal of the board
@@ -153,7 +173,13 @@ class SudokuGenerator:
 	Return: None
     '''
     def fill_diagonal(self):
-        pass
+        row_start = 1
+        col_start = 1
+        for i in range(3):
+            self.fill_box(row_start, col_start)
+            row_start += 3
+            col_start += 3
+
 
     '''
     DO NOT CHANGE
@@ -240,6 +266,10 @@ def generate_sudoku(size, removed):
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
     board = sudoku.get_board()
+    print(f"fill_values: {sudoku.get_board()}")
     sudoku.remove_cells()
     board = sudoku.get_board()
+    print(f"remove_values: {sudoku.get_board()}")
+    print(board)
     return board
+    
