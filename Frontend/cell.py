@@ -15,20 +15,35 @@ class Cell:
         self.sketched_value = value
 
     def draw(self):
-        #creates the cell border walls
-        rect = pygame.Rect(self.col *210, self.row *210, 210, 210)
+        rect = pygame.Rect(self.col * 210, self.row * 210, 210, 210)
         pygame.draw.rect(self.screen, "black", rect, 2)
+
+        small_cell_size = 70
+        #horizontal lines for smaller grid
+        for i in range(1, 3):
+            pygame.draw.line(
+                self.screen,
+                "black",
+                (self.col * 210, self.row * 210 + i * small_cell_size),
+                (self.col * 210 + 210, self.row * 210 + i * small_cell_size),
+                3
+            )
+        # vertical lines for smaller grid
+        for i in range(1, 3):
+            pygame.draw.line(
+                self.screen,
+                "black",
+                (self.col * 210 + i * small_cell_size, self.row * 210),
+                (self.col * 210 + i * small_cell_size, self.row * 210 + 210),
+                3
+            )
+
+        #draw value in cell
         if self.value != '-':
             font = pygame.font.Font(None, 100)
             text = font.render(str(self.value), True, "black")
-            self.screen.blit(text, (self.col * 210, self.row * 210))
-        #creates the individual cells
-        for i in range(70, 630, 70):
-            rect = pygame.Rect(self.col * i, self.row * i, i, i)
-            pygame.draw.rect(self.screen, "black", rect, 2)
-            if self.value != '-':
-                font = pygame.font.Font(None, 100)
-                text = font.render(str(self.value), True, "black")
-                self.screen.blit(text, (self.col * i, self.row * i))
+            self.screen.blit(text, (self.col * 210 + 50, self.row * 210 + 50))
+
+
 
 
