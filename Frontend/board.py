@@ -14,7 +14,14 @@ class Cell:
         self.sketched_value = value
 
     def draw(self):
-        pass
+        #creates the cell border walls
+        rect = pygame.Rect(self.col *200, self.row *200, 200, 200)
+        pygame.draw.rect(self.screen, "black", rect, 2)
+        if self.value != '-':
+            font = pygame.font.Font(None, 100)
+            text = font.render(str(self.value), True, "black")
+            self.screen.blit(text, (self.col * 200 + 50, self.row * 200 + 50))
+
 class Board:
     def __init__(self, width, height, screen, difficulty):
         self.width = width
@@ -23,7 +30,7 @@ class Board:
         self.board = self.initialize_board()
         self.difficulty = difficulty
         self.cells = [
-            [Cell(self.board[i][j], i , j) for j in range(3)]
+            [Cell(self.board[i][j], i , j, self.screen) for j in range(3)]
             for i in range(3)
         ]
     def initialize_board(self):
@@ -48,9 +55,11 @@ class Board:
                 (i*200, 600),
                 15
             )
-        for i in range(self.rows):
-            for j in range(self.cols):
-                self.cells[i][j].draw(self.screen)
+        for row in self.cells:
+            for cell in row:
+                cell.draw()
+
+
 '''
     def select(self, row, col):
 
@@ -78,7 +87,6 @@ if __name__ == "__main__":
     pygame.display.set_caption('Sudoku')
     screen.fill("white")
     board = Board(3,3, screen,0)
-    board.draw()
 
     running = True
     while running:

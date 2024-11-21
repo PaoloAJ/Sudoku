@@ -16,6 +16,7 @@
     def draw(self):
         pass
     '''
+#chat
 import pygame
 import sys
 
