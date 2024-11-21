@@ -92,15 +92,47 @@ def draw_buttons():
     hard_rect = resizeimage2.get_rect(center=(460,500))
     screen.blit(resizeimage2, hard_rect)
     pygame.display.flip()
+def game_buttons():
+    #reset button
+    reset_image = pygame.image.load("reset_button.png")
+    width = 200
+    height = 150
+    resizeimage1 = pygame.transform.scale(reset_image, (width, height))
+    pygame.image.save(resizeimage1, "reset_button_resized.png")
+    reset_rect = resizeimage1.get_rect(center=(170,665))
+    screen.blit(resizeimage1, reset_rect)
+    pygame.display.flip()
+
+    #restart button
+    restart_image = pygame.image.load("restart_button.png")
+    width = 200
+    height = 150
+    resizeimage2 = pygame.transform.scale(restart_image, (width, height))
+    pygame.image.save(resizeimage2, "restart_button_resized.png")
+    restart_rect = resizeimage2.get_rect(center=(315,665))
+    screen.blit(resizeimage2, restart_rect)
+    pygame.display.flip()
+
+    #exit button
+    exit_image = pygame.image.load("exit_button.png")
+    width = 200
+    height = 150
+    resizeimage3 = pygame.transform.scale(exit_image, (width, height))
+    pygame.image.save(resizeimage3, "exit_button_resized.png")
+    exit_rect = resizeimage3.get_rect(center=(460,665))
+    screen.blit(resizeimage3, exit_rect)
+    pygame.display.flip()
+# def draw_background():
+#     pink_wall = pygame.image.load("pink wall.avif")
+#     width = 630
+#     height = 700
+#     resizeimage5 = pygame.transform.scale(pink_wall, (width, height))
+#     pygame.image.save(resizeimage5, "pink wall_resized.avif")
+#     pink_rect = resizeimage5.get_rect(center=(630//2, 700//2))
+#     screen.blit(resizeimage5, pink_rect)
+#     pygame.display.flip()
 
 
-    #easy_width, easy_height = easy_image.get_size()
-    # easy_rect = easy_image.get_rect(center=(630 // 2, 700 // 2 + 100))
-    # screen.blit(easy_image, easy_rect)
-    # pygame.display.flip()
-
-
-    #add buttons
 '''
     def select(self, row, col):
 
@@ -136,6 +168,7 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((630, 700))
     pygame.display.set_caption('Sudoku')
     screen.fill("white")
+    #draw_background()
     board = Board(3, 3, screen, 0)
     draw_welcome()
     draw_buttons()
@@ -154,4 +187,5 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             screen.fill("light pink")
             board.draw()
+            game_buttons()
             pygame.display.update()
