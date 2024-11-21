@@ -1,3 +1,4 @@
+
 import pygame, sys
 from cell import Cell
 class Board:
@@ -16,22 +17,22 @@ class Board:
 
     def draw(self):
         #horizontal lines
-        for i in range(1, 3):
+        for i in range(1, 4):
             pygame.draw.line(
                 self.screen,
                 "black",
-                (0, i*200),
-                (600, i*200),
-                15
+                (0, i*210),
+                (630, i*210),
+                10
             )
         #vertical lines
         for i in range(1, 3):
             pygame.draw.line(
                 self.screen,
                 "black",
-                (i*200, 0),
-                (i*200, 600),
-                15
+                (i*210, 0),
+                (i*210, 630),
+                10
             )
         for row in self.cells:
             for cell in row:
@@ -61,7 +62,7 @@ class Board:
 #put main in sudoku.py file
 if __name__ == "__main__":
     pygame.init()
-    screen = pygame.display.set_mode((600, 600))
+    screen = pygame.display.set_mode((630, 700))
     pygame.display.set_caption('Sudoku')
     screen.fill("white")
     board = Board(3,3, screen,0)
