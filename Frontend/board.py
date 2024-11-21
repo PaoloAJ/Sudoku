@@ -44,7 +44,15 @@ class Board:
 
 
 def draw_welcome():
-    screen.fill("white")
+    pink_wall = pygame.image.load("pink_wall.png")
+    width = 630
+    height = 700
+    resizeimage5 = pygame.transform.scale(pink_wall, (width, height))
+    pygame.image.save(resizeimage5, "pink_wall_resized.png")
+    pink_rect = resizeimage5.get_rect(center=(630 // 2, 700 // 2))
+    screen.blit(resizeimage5, pink_rect)
+    pygame.display.flip()
+
     welcome_font = pygame.font.Font(None, 60)
     welcome_text = "Welcome to Sudoku"
 
@@ -122,15 +130,7 @@ def game_buttons():
     exit_rect = resizeimage3.get_rect(center=(460,665))
     screen.blit(resizeimage3, exit_rect)
     pygame.display.flip()
-# def draw_background():
-#     pink_wall = pygame.image.load("pink wall.avif")
-#     width = 630
-#     height = 700
-#     resizeimage5 = pygame.transform.scale(pink_wall, (width, height))
-#     pygame.image.save(resizeimage5, "pink wall_resized.avif")
-#     pink_rect = resizeimage5.get_rect(center=(630//2, 700//2))
-#     screen.blit(resizeimage5, pink_rect)
-#     pygame.display.flip()
+
 
 
 '''
@@ -153,30 +153,16 @@ def game_buttons():
     def check_board(self):
 '''
 
-# cat_image = pygame.image.load("olli-the-polite-cat.jpg")
-# cat_width, cat_height = cat_image.get_size()
-# cat_rect = cat_image.get_rect(center=(630//2, 700//2 + 100))
-# screen.blit(cat_image, cat_rect)
-# pygame.display.flip()
-
-
-
-
 #put main in sudoku.py file
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((630, 700))
     pygame.display.set_caption('Sudoku')
     screen.fill("white")
-    #draw_background()
     board = Board(3, 3, screen, 0)
     draw_welcome()
     draw_buttons()
     pygame.display.update()
-
-# cat_rect = cat_image.get_rect(center=(630//2, 700//2 + 100))
-# screen.blit(cat_image, cat_rect)
-# pygame.display.flip()
 
 running = True
 while running:
