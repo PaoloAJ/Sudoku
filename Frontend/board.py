@@ -59,11 +59,45 @@ def draw_welcome():
     select_rect = select_surf.get_rect(center=(630//2, 700//2 + 100))
     board.screen.blit(select_surf, select_rect)
 
+def draw_buttons():
+    #easy Button + placement below
     easy_image = pygame.image.load("easy_button.png")
-    easy_width, easy_height = easy_image.get_size()
-    easy_rect = easy_image.get_rect(center=(630 // 2, 700 // 2 + 100))
-    screen.blit(easy_image, easy_rect)
+    width = 200
+    height = 150
+    resizeimage = pygame.transform.scale(easy_image, (width, height))
+    pygame.image.save(resizeimage, "easy_button_resized.png")
+    resized_width, resized_height = resizeimage.get_size()
+    easy_rect = resizeimage.get_rect(center=(170,500))
+    screen.blit(resizeimage, easy_rect)
     pygame.display.flip()
+
+    #medium button + placement below
+    medium_image = pygame.image.load("medium_button.png")
+    width = 200
+    height = 150
+    resizeimage1 = pygame.transform.scale(medium_image, (width, height))
+    pygame.image.save(resizeimage1, "medium_button_resized.png")
+    resized_width1, resized_height1 = resizeimage1.get_size()
+    medium_rect = resizeimage1.get_rect(center=(315,500))
+    screen.blit(resizeimage1, medium_rect)
+    pygame.display.flip()
+
+    #hard button +placement below
+    hard_image = pygame.image.load("hard_button.png")
+    width = 200
+    height = 150
+    resizeimage2 = pygame.transform.scale(hard_image, (width, height))
+    pygame.image.save(resizeimage2, "hard_button_resized.png")
+    resized_width2, resized_height2 = resizeimage2.get_size()
+    hard_rect = resizeimage2.get_rect(center=(460,500))
+    screen.blit(resizeimage2, hard_rect)
+    pygame.display.flip()
+
+
+    #easy_width, easy_height = easy_image.get_size()
+    # easy_rect = easy_image.get_rect(center=(630 // 2, 700 // 2 + 100))
+    # screen.blit(easy_image, easy_rect)
+    # pygame.display.flip()
 
 
     #add buttons
@@ -104,6 +138,7 @@ if __name__ == "__main__":
     screen.fill("white")
     board = Board(3, 3, screen, 0)
     draw_welcome()
+    draw_buttons()
     pygame.display.update()
 
 # cat_rect = cat_image.get_rect(center=(630//2, 700//2 + 100))
