@@ -1,6 +1,6 @@
-
 import pygame, sys
 from cell import Cell
+
 class Board:
     def __init__(self, width, height, screen, difficulty):
         self.width = width
@@ -14,6 +14,9 @@ class Board:
         ]
     def initialize_board(self):
         return [["-" for i in range(3)]for j in range(3)]
+
+    def reset_board(self):
+        self.board = self.initialize_board()
 
     def draw(self):
         #horizontal lines
@@ -38,7 +41,30 @@ class Board:
             for cell in row:
                 cell.draw()
 
+def draw_welcome():
+    screen.fill("white")
+    welcome_font = pygame.font.Font(None, 40)
+    welcome_text = "Welcome to Sudoku"
+    end_surf = welcome_font.render(welcome_text, 0, "black")
+    end_rect = end_surf.get_rect(center=(630//2, 700//2 - 50))
+    screen.blit(end_surf, end_rect)
 
+def draw_game_over():
+    screen.fill("white")
+    welcome_font = pygame.font.Font(None, 60)
+    welcome_text = "Welcome to Sudoku"
+
+    welc_surf = welcome_font.render(welcome_text, 0, "black")
+    welc_rect = welc_surf.get_rect(center=(630//2, 700//2 - 50))
+    screen.blit(welc_surf, welc_rect)
+
+    select_font = pygame.font.Font(None, 45)
+    select_text = "Select Game Mode:"
+
+    select_surf = select_font.render(select_text, 0, "black")
+    select_rect = select_surf.get_rect(center=(630//2, 700//2 + 100))
+    board.screen.blit(select_surf, select_rect)
+    #add buttons
 '''
     def select(self, row, col):
 
@@ -58,6 +84,10 @@ class Board:
     def find_empty(self):
     def check_board(self):
 '''
+cat_image = pygame.image.load("olli-the-polite-cat.jpg")
+cat_width, cat_height = cat_image.get_size()
+
+
 
 #put main in sudoku.py file
 if __name__ == "__main__":
@@ -65,17 +95,21 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((630, 700))
     pygame.display.set_caption('Sudoku')
     screen.fill("white")
-    board = Board(3,3, screen,0)
+    board = Board(3, 3, screen, 0)
+    draw_game_over()
+    pygame.display.update()
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+cat_rect = cat_image.get_rect(center=(630//2, 700//2 + 100))
+screen.blit(cat_image, cat_rect)
+pygame.display.flip()
 
-        screen.fill("white")
-        board.draw()
-        pygame.display.flip()
-
-    pygame.quit()
-    sys.exit()
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            screen.fill("light pink")
+            board.draw()
+            pygame.display.update()
