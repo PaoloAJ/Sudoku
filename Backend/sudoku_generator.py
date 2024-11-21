@@ -106,7 +106,7 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def valid_in_box(self, row_start, col_start, num):
-        for i in range(row_start ,row_start + 3):
+        for i in range(row_start ,row_start + 3): # << Removed the row_start -1 and I added 3 instead of 2
             for j in range(col_start, col_start + 3):
                 if self.board[i][j] == num:
                     return False
@@ -125,7 +125,7 @@ class SudokuGenerator:
     '''
     def is_valid(self, row, col, num):
         if self.valid_in_col(col, num) and self.valid_in_row(row, num):
-            if row < 3:
+            if row < 3: #<< Then fixed all of these to not include the 3 and 6 if that makes sense
                 row_start = 0
             elif row <6:
                 row_start = 3
@@ -246,7 +246,7 @@ class SudokuGenerator:
 	Return: None
     '''
     def remove_cells(self):
-        for i in range(self.removed_cells):
+        for i in range(self.removed_cells): #<< This is the new code
             while True:
                 random_row = random.randint(0, 8)
                 random_col = random.randint(0, 8)
