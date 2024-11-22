@@ -76,6 +76,16 @@ def draw_welcome():
     welcome_bg.text_render("Welcome to Sudoku", 30, 60, (630 // 2, 700 // 2 - 50))
     welcome_bg.text_render("Select Game Mode", 30, 45, (630 // 2, 700 // 2 + 100))
 
+def text_render(text, color, size, pos):
+    text = str(text)
+    font = pygame.font.Font(None, size)
+
+    surf = font.render(text, 0, color)
+    rect = surf.get_rect(center=pos)
+    screen.blit(surf, rect)
+
+
+
 def game_buttons():
     reset_but.button_render(screen, (170, 665))
     restart_but.button_render(screen, (315, 665))
@@ -138,9 +148,11 @@ if __name__ == "__main__":
     difficulty_buttons()
     pygame.display.update()
 
+
 game_in_progress = False
 
 while True:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -164,14 +176,16 @@ while True:
                 empty_cells = 30
                 game_in_progress = True
 
-        if game_in_progress:
-            screen.fill("light pink")
-            #draw_easy_board()
-            board.draw()
-            game_buttons()
-            pygame.display.update()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pass
+            if game_in_progress:
+                screen.fill("light pink")
+                board.draw()
+                game_buttons()
+                text_render(9, 30, 75, (35, 35))
+                text_render("8", 30, 75, (105, 35))
+                pygame.display.update()
+
+                #if event.type == pygame.MOUSEBUTTONDOWN:
+
 
 
 
