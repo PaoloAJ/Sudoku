@@ -1,5 +1,6 @@
 import pygame, sys
 from Frontend.board import *
+from Backend.sudoku_generator import *
 
 def game_buttons(screen, reset, restart, exit):
     reset.button_render(screen, (170, 665))
@@ -10,6 +11,14 @@ def difficulty_buttons(screen, easy, med, hard):
     easy.button_render(screen, (170, 500))
     med.button_render(screen, (315, 500))
     hard.button_render(screen, (460, 500))
+
+def draw_board(sudoku, screen):
+    for i in range(len(sudoku)):
+        for j in range(len(sudoku[i])):
+            if sudoku[i][j] == 0:
+                continue
+            else:
+                text_render(str(sudoku[i][j]), 30, 75, ((i * 70) + 35, (j * 70) + 35), screen )
 
 def main():
     pygame.init()
@@ -46,26 +55,36 @@ def main():
                 print(x, y)
                 if (easy_but.rect.left <= mouse_pos[0] <= easy_but.rect.right
                         and easy_but.rect.top <= mouse_pos[1] <= easy_but.rect.bottom):
-                    empty_cells = 30
+                    empty_cells = 0
+                    sudoku, solution = generate_sudoku(9, empty_cells)
                     game_in_progress = True
+                    screen.fill("light pink")
+                    board.draw()
+                    game_buttons(screen, reset_but, restart_but, exit_but)
 
                 elif(med_but.rect.left <= mouse_pos[0] <= med_but.rect.right
                         and med_but.rect.top <= mouse_pos[1] <= med_but.rect.bottom):
                     empty_cells = 40
+                    sudoku, solution = generate_sudoku(9, empty_cells)
                     game_in_progress = True
-
-                elif(hard_but.rect.left <= mouse_pos[0] <= hard_but.rect.right
-                        and hard_but.rect.top <= mouse_pos[1] <= hard_but.rect.bottom):
-                    empty_cells = 30
-                    game_in_progress = True
-
-                if game_in_progress:
                     screen.fill("light pink")
                     board.draw()
                     game_buttons(screen, reset_but, restart_but, exit_but)
-                    # text_render(9, 30, 75, (35, 35), screen)
-                    # text_render("8", 30, 75, (105, 35), screen)
-                    pygame.display.update()
+
+                elif(hard_but.rect.left <= mouse_pos[0] <= hard_but.rect.right
+                        and hard_but.rect.top <= mouse_pos[1] <= hard_but.rect.bottom):
+                    empty_cells = 50
+                    sudoku, solution = generate_sudoku(9, empty_cells)
+                    game_in_progress = True
+                    screen.fill("light pink")
+                    board.draw()
+                    game_buttons(screen, reset_but, restart_but, exit_but)
+
+            if game_in_progress:
+                draw_board(sudoku, screen)
+                # text_render(9, 30, 75, (35, 35), screen)
+                # text_render("8", 30, 75, (105, 35), screen)
+                pygame.display.update()
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
@@ -74,7 +93,7 @@ def main():
                 col = x // 70
                 print(row, col)
 
-
 if __name__ == "__main__":
     main()
+
 
