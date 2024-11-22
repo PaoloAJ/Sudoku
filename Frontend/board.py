@@ -184,7 +184,9 @@ while True:
                 text_render("8", 30, 75, (105, 35))
                 pygame.display.update()
 
-                #if event.type == pygame.MOUSEBUTTONDOWN:
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            x, y = event.pos
+            print(x, y)
 
 
 
