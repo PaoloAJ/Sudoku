@@ -41,65 +41,34 @@ class Board:
             for cell in row:
                 cell.draw()
 
+class Display:
+    def __init__(self, image_path, width, height):
+        self.image_path = image_path
+        self.width = width
+        self.height = height
+        self.image = pygame.image.load(image_path)
+        self.resized_image = pygame.transform.scale(self.image, (width, height))
+        self.rect = self.resized_image.get_rect(center=(width // 2, height // 2))
 
+    def save_resized_image(self, save_path):
+        pygame.image.save(self.resized_image, save_path)
 
-def draw_welcome():
-    pink_wall = pygame.image.load("pink_wall.png")
-    width = 630
-    height = 700
-    resizeimage5 = pygame.transform.scale(pink_wall, (width, height))
-    pygame.image.save(resizeimage5, "pink_wall_resized.png")
-    pink_rect = resizeimage5.get_rect(center=(630 // 2, 700 // 2))
-    screen.blit(resizeimage5, pink_rect)
-    pygame.display.flip()
+    def bg_render(self, screen):
+        screen.blit(self.resized_image, self.rect)
+        pygame.display.flip()
 
-    welcome_font = pygame.font.Font(None, 60)
-    welcome_text = "Welcome to Sudoku"
+    def button_render(self, screen, pos):
+        self.rect = self.resized_image.get_rect(center=pos)
+        screen.blit(self.resized_image, self.rect)
+        pygame.display.flip()
 
-    welc_surf = welcome_font.render(welcome_text, 0, "black")
-    welc_rect = welc_surf.get_rect(center=(630//2, 700//2 - 50))
-    screen.blit(welc_surf, welc_rect)
+    def text_render(self, text, color, size, pos):
+        font = pygame.font.Font(None, size)
 
-    select_font = pygame.font.Font(None, 45)
-    select_text = "Select Game Mode:"
+        surf = font.render(text, 0, color)
+        rect = surf.get_rect(center=pos)
+        screen.blit(surf, rect)
 
-    select_surf = select_font.render(select_text, 0, "black")
-    select_rect = select_surf.get_rect(center=(630//2, 700//2 + 100))
-    board.screen.blit(select_surf, select_rect)
-
-def draw_buttons():
-    #easy Button + placement below
-    easy_image = pygame.image.load("easy_button.png")
-    width = 200
-    height = 150
-    resizeimage = pygame.transform.scale(easy_image, (width, height))
-    pygame.image.save(resizeimage, "easy_button_resized.png")
-    resized_width, resized_height = resizeimage.get_size()
-    easy_rect = resizeimage.get_rect(center=(170,500))
-    screen.blit(resizeimage, easy_rect)
-    pygame.display.flip()
-
-    #medium button + placement below
-    medium_image = pygame.image.load("medium_button.png")
-    width = 200
-    height = 150
-    resizeimage1 = pygame.transform.scale(medium_image, (width, height))
-    pygame.image.save(resizeimage1, "medium_button_resized.png")
-    resized_width1, resized_height1 = resizeimage1.get_size()
-    medium_rect = resizeimage1.get_rect(center=(315,500))
-    screen.blit(resizeimage1, medium_rect)
-    pygame.display.flip()
-
-    #hard button +placement below
-    hard_image = pygame.image.load("hard_button.png")
-    width = 200
-    height = 150
-    resizeimage2 = pygame.transform.scale(hard_image, (width, height))
-    pygame.image.save(resizeimage2, "hard_button_resized.png")
-    resized_width2, resized_height2 = resizeimage2.get_size()
-    hard_rect = resizeimage2.get_rect(center=(460,500))
-    screen.blit(resizeimage2, hard_rect)
-    pygame.display.flip()
 def game_buttons():
     #reset button
     reset_image = pygame.image.load("reset_button.png")
@@ -131,7 +100,15 @@ def game_buttons():
     screen.blit(resizeimage3, exit_rect)
     pygame.display.flip()
 
-
+def draw_easy_board():
+    board3 = pygame.image.load("wildcatjan17p.gif")
+    width2= 630
+    height2 = 630
+    resizeimage10 = pygame.transform.scale(board3, (width2, height2))
+    pygame.image.save(resizeimage10, "wildcatjan17p.resized.gif")
+    board3_rect = resizeimage10.get_rect(topleft=(0, 0))
+    screen.blit(resizeimage10, board3_rect)
+    pygame.display.flip()
 
 '''
     def select(self, row, col):
@@ -153,25 +130,54 @@ def game_buttons():
     def check_board(self):
 '''
 
+
 #put main in sudoku.py file
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((630, 700))
     pygame.display.set_caption('Sudoku')
     screen.fill("white")
+
     board = Board(3, 3, screen, 0)
-    draw_welcome()
-    draw_buttons()
+
+    welcome_bg = Display("pink_wall.png", 630, 700)
+    easy_but = Display("easy_button.png", 200, 150)
+    med_but = Display("medium_button.png", 200, 150)
+    hard_but = Display("hard_button.png", 200, 150)
+
+    welcome_bg.bg_render(screen)
+    welcome_bg.text_render("Welcome to Sudoku", 30, 60, (630 // 2, 700 // 2 - 50))
+    welcome_bg.text_render("Select Game Mode", 30, 45, (630 // 2, 700 // 2 + 100))
+
+    easy_but.button_render(screen, (170, 500))
+    med_but.button_render(screen, (315, 500))
+    hard_but.button_render(screen, (460, 500))
+
     pygame.display.update()
 
-running = True
-while running:
+
+
+while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
+            x,y = event.pos
+            mouse_pos = x,y
+            print(x, y)
+            if (easy_but.rect.left <= mouse_pos[0] <= easy_but.rect.right
+                    and easy_but.rect.top <= mouse_pos[1] <= easy_but.rect.bottom):
+                empty_cells = 30
+            elif(med_but.rect.left <= mouse_pos[0] <= med_but.rect.right
+                    and med_but.rect.top <= mouse_pos[1] <= med_but.rect.bottom):
+                empty_cells = 40
+            elif(hard_but.rect.left <= mouse_pos[0] <= hard_but.rect.right
+                    and hard_but.rect.top <= mouse_pos[1] <= hard_but.rect.bottom):
+                empty_cells = 30
+
             screen.fill("light pink")
+            draw_easy_board()
             board.draw()
             game_buttons()
             pygame.display.update()
