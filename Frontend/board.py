@@ -1,5 +1,49 @@
 import pygame, sys
-from cell import Cell
+class Cell:
+    def __init__(self, value, row, col, screen):
+        self.value = value
+        self.row = row
+        self.col = col
+        self.screen = screen
+        self.sketched_value = 0
+
+    def set_cell_value(self,value):
+        self.value = value
+
+    def set_sketched_value(self, value):
+        self.sketched_value = value
+
+    def draw(self):
+        rect = pygame.Rect(self.col * 210, self.row * 210, 210, 210)
+        pygame.draw.rect(self.screen, "black", rect, 2)
+
+        small_cell_size = 70
+        #horizontal lines for smaller grid
+        for i in range(1, 3):
+            pygame.draw.line(
+                self.screen,
+                "black",
+                (self.col * 210, self.row * 210 + i * small_cell_size),
+                (self.col * 210 + 210, self.row * 210 + i * small_cell_size),
+                3
+            )
+        # vertical lines for smaller grid
+        for i in range(1, 3):
+            pygame.draw.line(
+                self.screen,
+                "black",
+                (self.col * 210 + i * small_cell_size, self.row * 210),
+                (self.col * 210 + i * small_cell_size, self.row * 210 + 210),
+                3
+            )
+
+        #draw value in cell
+        if self.value != '-':
+            font = pygame.font.Font(None, 100)
+            text = font.render(str(self.value), True, "black")
+            self.screen.blit(text, (self.col * 210 + 50, self.row * 210 + 50))
+
+
 
 class Board:
     def __init__(self, width, height, screen, difficulty):
@@ -62,21 +106,21 @@ class Display:
         screen.blit(self.resized_image, self.rect)
         pygame.display.flip()
 
-    def text_render(self, text, color, size, pos):
+    def text_render(self, text, color, size, pos, screen):
         font = pygame.font.Font(None, size)
 
         surf = font.render(text, 0, color)
         rect = surf.get_rect(center=pos)
         screen.blit(surf, rect)
 
-def draw_welcome():
-    welcome_bg = Display("pink_wall.png", 630, 700)
+def draw_welcome(screen):
+    welcome_bg = Display("./Frontend/pink_wall.png", 630, 700)
 
     welcome_bg.bg_render(screen)
-    welcome_bg.text_render("Welcome to Sudoku", 30, 60, (630 // 2, 700 // 2 - 50))
-    welcome_bg.text_render("Select Game Mode", 30, 45, (630 // 2, 700 // 2 + 100))
+    welcome_bg.text_render("Welcome to Sudoku", 30, 60, (630 // 2, 700 // 2 - 50), screen)
+    welcome_bg.text_render("Select Game Mode", 30, 45, (630 // 2, 700 // 2 + 100), screen)
 
-def text_render(text, color, size, pos):
+def text_render( text, color, size, pos, screen):
     text = str(text)
     font = pygame.font.Font(None, size)
 
@@ -86,117 +130,16 @@ def text_render(text, color, size, pos):
 
 
 
-def game_buttons():
-    reset_but.button_render(screen, (170, 665))
-    restart_but.button_render(screen, (315, 665))
-    exit_but.button_render(screen, (460, 665))
 
-def difficulty_buttons():
-    easy_but.button_render(screen, (170, 500))
-    med_but.button_render(screen, (315, 500))
-    hard_but.button_render(screen, (460, 500))
-
-def draw_easy_board():
-    board3 = pygame.image.load("wildcatjan17p.gif")
-    width2= 630
-    height2 = 630
-    resizeimage10 = pygame.transform.scale(board3, (width2, height2))
-    pygame.image.save(resizeimage10, "wildcatjan17p.resized.gif")
-    board3_rect = resizeimage10.get_rect(topleft=(0, 0))
-    screen.blit(resizeimage10, board3_rect)
-    pygame.display.flip()
-
-'''
-    def select(self, row, col):
-
-    def click(self, row, col):
-
-    def clear(self):
-
-    def sketch(self, value):
-
-    def place_number(self, value):
-
-    def reset_to_original(self):
-
-    def is_full(self):
-
-    def update_board(self):
-    def find_empty(self):
-    def check_board(self):
-'''
+# def draw_easy_board(screen):
+#     board3 = pygame.image.load("wildcatjan17p.gif")
+#     width2= 630
+#     height2 = 630
+#     resizeimage10 = pygame.transform.scale(board3, (width2, height2))
+#     pygame.image.save(resizeimage10, "wildcatjan17p.resized.gif")
+#     board3_rect = resizeimage10.get_rect(topleft=(0, 0))
+#     screen.blit(resizeimage10, board3_rect)
+#     pygame.display.flip()
 
 
 #put main in sudoku.py file
-if __name__ == "__main__":
-    pygame.init()
-    screen = pygame.display.set_mode((630, 700))
-    pygame.display.set_caption('Sudoku')
-    screen.fill("white")
-
-    board = Board(3, 3, screen, 0)
-
-    easy_but = Display("easy_button.png", 200, 150)
-    med_but = Display("medium_button.png", 200, 150)
-    hard_but = Display("hard_button.png", 200, 150)
-
-    reset_but = Display("reset_button.png", 200, 150)
-    restart_but = Display("restart_button.png", 200, 150)
-    exit_but = Display("exit_button.png", 200, 150)
-
-    draw_welcome()
-    difficulty_buttons()
-    pygame.display.update()
-
-
-game_in_progress = False
-
-while True:
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN and not game_in_progress:
-            x,y = event.pos
-            mouse_pos = x,y
-            print(x, y)
-            if (easy_but.rect.left <= mouse_pos[0] <= easy_but.rect.right
-                    and easy_but.rect.top <= mouse_pos[1] <= easy_but.rect.bottom):
-                empty_cells = 30
-                game_in_progress = True
-
-            elif(med_but.rect.left <= mouse_pos[0] <= med_but.rect.right
-                    and med_but.rect.top <= mouse_pos[1] <= med_but.rect.bottom):
-                empty_cells = 40
-                game_in_progress = True
-
-            elif(hard_but.rect.left <= mouse_pos[0] <= hard_but.rect.right
-                    and hard_but.rect.top <= mouse_pos[1] <= hard_but.rect.bottom):
-                empty_cells = 30
-                game_in_progress = True
-
-            if game_in_progress:
-                screen.fill("light pink")
-                board.draw()
-                game_buttons()
-                text_render(9, 30, 75, (35, 35))
-                text_render("8", 30, 75, (105, 35))
-                pygame.display.update()
-
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            x, y = event.pos
-            print(x, y)
-            row = y // 70
-            col = x // 70
-            print(row, col)
-
-
-
-
-
-
-
-
-
-
