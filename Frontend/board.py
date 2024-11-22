@@ -187,6 +187,9 @@ while True:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             x, y = event.pos
             print(x, y)
+            row = y // 70
+            col = x // 70
+            print(row, col)
 
 
 
