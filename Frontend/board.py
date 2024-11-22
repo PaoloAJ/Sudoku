@@ -69,36 +69,22 @@ class Display:
         rect = surf.get_rect(center=pos)
         screen.blit(surf, rect)
 
+def draw_welcome():
+    welcome_bg = Display("pink_wall.png", 630, 700)
+
+    welcome_bg.bg_render(screen)
+    welcome_bg.text_render("Welcome to Sudoku", 30, 60, (630 // 2, 700 // 2 - 50))
+    welcome_bg.text_render("Select Game Mode", 30, 45, (630 // 2, 700 // 2 + 100))
+
 def game_buttons():
-    #reset button
-    reset_image = pygame.image.load("reset_button.png")
-    width = 200
-    height = 150
-    resizeimage1 = pygame.transform.scale(reset_image, (width, height))
-    pygame.image.save(resizeimage1, "reset_button_resized.png")
-    reset_rect = resizeimage1.get_rect(center=(170,665))
-    screen.blit(resizeimage1, reset_rect)
-    pygame.display.flip()
+    reset_but.button_render(screen, (170, 665))
+    restart_but.button_render(screen, (315, 665))
+    exit_but.button_render(screen, (460, 665))
 
-    #restart button
-    restart_image = pygame.image.load("restart_button.png")
-    width = 200
-    height = 150
-    resizeimage2 = pygame.transform.scale(restart_image, (width, height))
-    pygame.image.save(resizeimage2, "restart_button_resized.png")
-    restart_rect = resizeimage2.get_rect(center=(315,665))
-    screen.blit(resizeimage2, restart_rect)
-    pygame.display.flip()
-
-    #exit button
-    exit_image = pygame.image.load("exit_button.png")
-    width = 200
-    height = 150
-    resizeimage3 = pygame.transform.scale(exit_image, (width, height))
-    pygame.image.save(resizeimage3, "exit_button_resized.png")
-    exit_rect = resizeimage3.get_rect(center=(460,665))
-    screen.blit(resizeimage3, exit_rect)
-    pygame.display.flip()
+def difficulty_buttons():
+    easy_but.button_render(screen, (170, 500))
+    med_but.button_render(screen, (315, 500))
+    hard_but.button_render(screen, (460, 500))
 
 def draw_easy_board():
     board3 = pygame.image.load("wildcatjan17p.gif")
@@ -140,44 +126,58 @@ if __name__ == "__main__":
 
     board = Board(3, 3, screen, 0)
 
-    welcome_bg = Display("pink_wall.png", 630, 700)
     easy_but = Display("easy_button.png", 200, 150)
     med_but = Display("medium_button.png", 200, 150)
     hard_but = Display("hard_button.png", 200, 150)
 
-    welcome_bg.bg_render(screen)
-    welcome_bg.text_render("Welcome to Sudoku", 30, 60, (630 // 2, 700 // 2 - 50))
-    welcome_bg.text_render("Select Game Mode", 30, 45, (630 // 2, 700 // 2 + 100))
+    reset_but = Display("reset_button.png", 200, 150)
+    restart_but = Display("restart_button.png", 200, 150)
+    exit_but = Display("exit_button.png", 200, 150)
 
-    easy_but.button_render(screen, (170, 500))
-    med_but.button_render(screen, (315, 500))
-    hard_but.button_render(screen, (460, 500))
-
+    draw_welcome()
+    difficulty_buttons()
     pygame.display.update()
 
-
+game_in_progress = False
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and not game_in_progress:
             x,y = event.pos
             mouse_pos = x,y
             print(x, y)
             if (easy_but.rect.left <= mouse_pos[0] <= easy_but.rect.right
                     and easy_but.rect.top <= mouse_pos[1] <= easy_but.rect.bottom):
                 empty_cells = 30
+                game_in_progress = True
+
             elif(med_but.rect.left <= mouse_pos[0] <= med_but.rect.right
                     and med_but.rect.top <= mouse_pos[1] <= med_but.rect.bottom):
                 empty_cells = 40
+                game_in_progress = True
+
             elif(hard_but.rect.left <= mouse_pos[0] <= hard_but.rect.right
                     and hard_but.rect.top <= mouse_pos[1] <= hard_but.rect.bottom):
                 empty_cells = 30
+                game_in_progress = True
 
+        if game_in_progress:
             screen.fill("light pink")
-            draw_easy_board()
+            #draw_easy_board()
             board.draw()
             game_buttons()
             pygame.display.update()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pass
+
+
+
+
+
+
+
+
+
