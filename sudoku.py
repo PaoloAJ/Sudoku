@@ -98,9 +98,9 @@ def main():
                         print(f"Number pressed: {number}")
                         cell_pressed = False
                         if (sudoku[col][row] == 0):
-                            # screen.fill("light pink")
-                            # board.draw()
-                            # game_buttons(screen, reset_but, restart_but, exit_but)
+                            screen.fill("light pink")
+                            board.draw()
+                            game_buttons(screen, reset_but, restart_but, exit_but)
                             text_render(str(number), "blue", 35, ((col * 70) + 35, (row * 70) + 35), screen)
                             enter = True
 
