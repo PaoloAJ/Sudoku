@@ -55,7 +55,7 @@ def main():
                 print(x, y)
                 if (easy_but.rect.left <= mouse_pos[0] <= easy_but.rect.right
                         and easy_but.rect.top <= mouse_pos[1] <= easy_but.rect.bottom):
-                    empty_cells = 0
+                    empty_cells = 30
                     sudoku, solution = generate_sudoku(9, empty_cells)
                     game_in_progress = True
                     screen.fill("light pink")
@@ -85,13 +85,33 @@ def main():
                 # text_render(9, 30, 75, (35, 35), screen)
                 # text_render("8", 30, 75, (105, 35), screen)
                 pygame.display.update()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    print(x, y)
+                    row = y // 70
+                    col = x // 70
+                    cell_pressed = True
 
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                print(x, y)
-                row = y // 70
-                col = x // 70
-                print(row, col)
+                elif event.type == pygame.KEYDOWN and cell_pressed:
+                    if pygame.K_1 <= event.key <= pygame.K_9:
+                        number = event.key - pygame.K_0
+                        print(f"Number pressed: {number}")
+                        cell_pressed = False
+                        if (sudoku[col][row] == 0):
+                            # screen.fill("light pink")
+                            # board.draw()
+                            # game_buttons(screen, reset_but, restart_but, exit_but)
+                            text_render(str(number), "blue", 35, ((col * 70) + 35, (row * 70) + 35), screen)
+                            enter = True
+
+                if event.type == pygame.KEYDOWN and enter:
+                    if event.key == pygame.K_RETURN:
+                        sudoku[col][row] = number
+                        screen.fill("light pink")
+                        board.draw()
+                        game_buttons(screen, reset_but, restart_but, exit_but)
+                        # temp = sudoku
+                        enter = False
 
 if __name__ == "__main__":
     main()
