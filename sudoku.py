@@ -71,7 +71,7 @@ while True:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
                 if easy_button.rect.collidepoint(mouse_pos):
-                    board = Board(BOARD_WIDTH, BOARD_HEIGHT, screen, 1)
+                    board = Board(BOARD_WIDTH, BOARD_HEIGHT, screen, 30)
                     game_menu = False
                     game_running = True
                 elif medium_button.rect.collidepoint(mouse_pos):
@@ -97,6 +97,7 @@ while True:
                         board.clear()
                     elif restart_button.rect.collidepoint(event.pos):
                         board.reset_to_original()
+
             # Handles key press
             if event.type == pygame.KEYDOWN and cell_selected:
                 if pygame.K_1 <= event.key <= pygame.K_9:
@@ -119,6 +120,10 @@ while True:
                 if event.key == pygame.K_RETURN and entered:
                     board.place_number(number)
                     entered = False
+                elif (
+                    event.key == pygame.K_RETURN and board.cells[row][col].sketched != 0
+                ):
+                    board.place_number(board.cells[row][col].sketched)
                 elif event.key == pygame.K_ESCAPE:
                     cell_selected = False
 

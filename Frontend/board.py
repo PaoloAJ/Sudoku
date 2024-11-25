@@ -55,7 +55,6 @@ class Board:
             return None, None
 
     def select(self, row, col):
-        # if self.cells[row][col].value == 0:
         # Deselect previously selected cell
         if self.selected_cell:
             prev_row, prev_col = self.selected_cell
@@ -65,9 +64,6 @@ class Board:
         if (row != None) and (col != None):
             self.selected_cell = (row, col)
             self.cells[row][col].selected = True
-
-        # else:
-        #     return None
 
     def sketch(self, value):
         if self.selected_cell:
@@ -96,7 +92,10 @@ class Board:
     def reset_to_original(self):
         for row in range(len(self.cells)):
             for col in range(len(self.cells[row])):
-                if self.cells[row][col].value != self.original_board[row][col]:
+                if (
+                    self.cells[row][col].value != self.original_board[row][col]
+                    or self.cells[row][col].sketched != 0
+                ):
                     self.board[row][col] = self.original_board[row][col]
                     self.cells[row][col].set_cell_value(self.original_board[row][col])
                     self.cells[row][col].set_sketched_value(0)
