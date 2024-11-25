@@ -6,9 +6,9 @@ from Frontend.buttons import Button
 
 pygame.init()
 
-mixer.music.load("barbie?.mp3")
-mixer.music.play(-1)
-
+bg_music = mixer.Sound("barbie?.mp3")
+sparkle = mixer.Sound("sparkle*.mp3")
+bg_music.play(-1)
 # Constants
 SCREEN_WIDTH, BOARD_WIDTH = 630, 630
 SCREEN_HEIGHT = 700
@@ -75,14 +75,17 @@ while True:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
                 if easy_button.rect.collidepoint(mouse_pos):
+                    sparkle.play()
                     board = Board(BOARD_WIDTH, BOARD_HEIGHT, screen, 30)
                     game_menu = False
                     game_running = True
                 elif medium_button.rect.collidepoint(mouse_pos):
+                    sparkle.play()
                     board = Board(BOARD_WIDTH, BOARD_HEIGHT, screen, 40)
                     game_menu = False
                     game_running = True
                 elif hard_button.rect.collidepoint(mouse_pos):
+                    sparkle.play()
                     board = Board(BOARD_WIDTH, BOARD_HEIGHT, screen, 50)
                     game_menu = False
                     game_running = True
