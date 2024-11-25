@@ -1,9 +1,13 @@
 import pygame
+from pygame import mixer
 import sys
 from Frontend.board import Board
 from Frontend.buttons import Button
 
 pygame.init()
+
+mixer.music.load("barbie?.mp3")
+mixer.music.play(-1)
 
 # Constants
 SCREEN_WIDTH, BOARD_WIDTH = 630, 630
