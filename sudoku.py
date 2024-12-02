@@ -182,7 +182,7 @@ def main():
         else:
             game_over_bg = pygame.image.load("./Images/sad_mj.jpg").convert_alpha()
             game_over_bg = pygame.transform.scale(game_over_bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
-            end_text = "YOU LOSE"
+            end_text = "Game Over :("
             restart_button_image = pygame.image.load("./Images/restart_button.png").convert_alpha()
             restart_button = Button(240, 500, restart_button_image, screen)
             button = restart_button
