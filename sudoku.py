@@ -6,15 +6,10 @@ from Frontend.buttons import Button
 
 pygame.init()
 
-bg_music = mixer.Sound("barbie?.mp3")
-sparkle = mixer.Sound("sparkle*.mp3")
+bg_music = mixer.Sound("barbie.mp3")
+sparkle = mixer.Sound("sparkle.mp3")
 bg_music.play(-1)
 
-
-# Test cases
-# board = Board(BOARD_WIDTH, BOARD_HEIGHT, screen, 30)
-# cell = Cell(0, 0, 0, screen)
-# cell2 = Cell(7, 1, 1, screen)
 
 def draw_welcome(screen):
 
@@ -29,42 +24,6 @@ def text_render(text, color, size, pos, screen):
     surf = font.render(text, 0, color)
     rect = surf.get_rect(center=pos)
     screen.blit(surf, rect)
-
-def handle_game_over(screen, winner, exit_button, reset_button):
-    SCREEN_WIDTH, SCREEN_HEIGHT = 630, 700
-
-    if winner == 1:
-        game_over_bg = pygame.image.load("./Images/smiling_cat.jpg").convert_alpha()
-        game_over_bg = pygame.transform.scale(game_over_bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
-        end_text = "Game Won!"
-        exit_button_image = pygame.image.load("./Images/exit_button.png").convert_alpha()
-        exit_button = Button(240, 500, exit_button_image, screen)
-        button = exit_button
-    else:
-        game_over_bg = pygame.image.load("./Images/sad_mj.jpg").convert_alpha()
-        game_over_bg = pygame.transform.scale(game_over_bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
-        end_text = "YOU LOSE"
-        restart_button_image = pygame.image.load("./Images/reset_button.png").convert_alpha()
-        restart_button = Button(240, 500, restart_button_image, screen)
-        button = restart_button
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if button.rect.collidepoint(event.pos):
-                    if button == exit_button:
-                        pygame.quit()
-                        sys.exit()
-                    elif button == reset_button:
-                        main()
-
-        screen.blit(game_over_bg, (0, 0))
-        text_render(end_text, "white", 60, (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50), screen)
-        button.draw()
-        pygame.display.update()
 
 
 def main():
@@ -141,9 +100,11 @@ def main():
                             pygame.quit()
                             sys.exit()
                         elif reset_button.rect.collidepoint(event.pos):
-                            board.clear()
-                        elif restart_button.rect.collidepoint(event.pos):
                             board.reset_to_original()
+                        elif restart_button.rect.collidepoint(event.pos):
+                            game_running = False
+                            game_menu = True
+
 
                 # Handles key press
                 if event.type == pygame.KEYDOWN and cell_selected:
@@ -209,7 +170,42 @@ def main():
 
     # Game over check
     if game_over:
-        handle_game_over(screen, winner1, exit_button, reset_button)
+        SCREEN_WIDTH, SCREEN_HEIGHT = 630, 700
+
+        if winner1 == 1:
+            game_over_bg = pygame.image.load("./Images/smiling_cat.jpg").convert_alpha()
+            game_over_bg = pygame.transform.scale(game_over_bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            end_text = "Game Won!"
+            exit_button_image = pygame.image.load("./Images/exit_button.png").convert_alpha()
+            exit_button = Button(240, 500, exit_button_image, screen)
+            button = exit_button
+        else:
+            game_over_bg = pygame.image.load("./Images/sad_mj.jpg").convert_alpha()
+            game_over_bg = pygame.transform.scale(game_over_bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            end_text = "YOU LOSE"
+            restart_button_image = pygame.image.load("./Images/restart_button.png").convert_alpha()
+            restart_button = Button(240, 500, restart_button_image, screen)
+            button = restart_button
+
+        while True:
+            screen.blit(game_over_bg, (0, 0))
+            text_render(end_text, "white", 60, (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50), screen)
+            button.draw()
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if button.rect.collidepoint(event.pos):
+                        if button == exit_button:
+                            pygame.quit()
+                            sys.exit()
+                        elif button == restart_button:
+                            main()
+
+
+
 
 
 if __name__ == "__main__":
