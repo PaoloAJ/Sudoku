@@ -6,9 +6,7 @@ from Frontend.buttons import Button
 
 pygame.init()
 
-bg_music = mixer.Sound("barbie.mp3")
 sparkle = mixer.Sound("sparkle.mp3")
-bg_music.play(-1)
 
 
 def draw_welcome(screen):

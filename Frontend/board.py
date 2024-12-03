@@ -41,7 +41,7 @@ class Board:
                 5,
             )
 
-        # # Draws board
+        # Draws board
         for row in range(len(self.cells)):
             for col in range(len(self.cells)):
                 self.cells[row][col].draw()
